@@ -10,13 +10,7 @@ pygame.init()
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Juego carpincho")
-
-# RUNNING = [pygame.image.load(os.path.join("Assets/capy", "capyRun1.png")),
-#         pygame.image.load(os.path.join("Assets/capy", "capyRun2.png"))]
-# JUMPING = pygame.image.load(os.path.join("Assets/capy", "capyJump.png"))
-# DUCKING = [pygame.image.load(os.path.join("Assets/capy", "capyDuck1.png")),
-#         pygame.image.load(os.path.join("Assets/capy", "capyDuck2.png"))]
+pygame.display.set_caption("CaPYbara Run")
 
 RUNNING = [
         pygame.image.load(os.path.join("Assets/Capy", "CapyRun0.png")),
@@ -38,6 +32,10 @@ SMALL_BOX = [pygame.image.load(os.path.join("Assets/Box", "SmallBox1.png")),
 LARGE_BOX = [pygame.image.load(os.path.join("Assets/Box", "LargeBox1.png")),
                 pygame.image.load(os.path.join("Assets/Box", "LargeBox2.png")),
                 pygame.image.load(os.path.join("Assets/Box", "LargeBox3.png"))]
+
+FRUITS = [pygame.image.load(os.path.join("Assets/Fruits", "Cherry.png")),
+        pygame.image.load(os.path.join("Assets/Fruits", "Watermelon.png"))]
+
 
 BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
         pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
@@ -175,9 +173,36 @@ class Bird(Obstacle):
         SCREEN.blit(self.image[self.index//5], self.rect)
         self.index += 1
 
+class Fruit:
+    def __init__(self, image, type):
+        self.image = image
+        self.type = type
+        self.rect = self.image[self.type].get_rect()
+        self.rect.x = SCREEN_WIDTH * 1.5
+
+    def update(self):
+        self.rect.x -= game_speed
+        if self.rect.x < -self.rect.width:
+            fruits.pop()
+    
+    def draw(self, SCREEN):
+        SCREEN.blit(self.image[self.type], self.rect)
+        
+
+class Cherry(Fruit):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 315
+        
+class Watermelon(Fruit):
+    def __init__(self, image):
+        self.type = 1
+        super().__init__(image, self.type)
+        self.rect.y = 315
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, fruits
     run = True
     clock = pygame.time.Clock()
     player = Capybara()
@@ -188,12 +213,12 @@ def main():
     points = 0
     font = pygame.font.Font('freesansbold.ttf', 20)
     obstacles = []
+    fruits = []
     death_count = 0
     
     def score():
         global points, game_speed
-        points += 1
-        if points % 100 == 0:
+        if points % 30 == 0 and points > 0:
             game_speed += 1
         text = font.render("Puntos: " + str(points), True, (0, 0, 0))
         textRect = text.get_rect()
@@ -238,6 +263,19 @@ def main():
                 pygame.time.delay(2000)
                 death_count += 1
                 menu(death_count)
+                
+        if len(fruits) == 0:
+            if random.randint(0, 1) == 0:
+                fruits.append(Cherry(FRUITS))
+            elif random.randint(0, 1) == 1:
+                fruits.append(Watermelon(FRUITS))
+        
+        for fruit in fruits:
+            fruit.draw(SCREEN)
+            fruit.update()
+            if player.capy_rect.colliderect(fruit.rect):
+                fruits.pop()
+                points += 1
         
         cloud.draw(SCREEN)
         cloud.update()
@@ -255,7 +293,7 @@ def menu(death_count):
     global points
     run = True
     while run:
-        SCREEN.fill((255, 255, 255))
+        SCREEN.fill((111, 176, 183))
         font = pygame.font.Font('freesansbold.ttf', 20)
         
         if death_count == 0:
