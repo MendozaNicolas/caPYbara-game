@@ -12,6 +12,7 @@
 - [CaPYbara Game](#capybara-game)
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [Descripción](#descripción)
+  - [Sobre el proyecto](#sobre-el-proyecto)
   - [Instalación](#instalación)
   - [Controles](#controles)
   - [Librerias](#librerias)
@@ -20,6 +21,13 @@
 
 
 Esta es la implementacion sencilla de un juego de Python utilizando la libreria Pygame. El juego es basico y tenes que ir esquivando enemigos y obstaculos, cuantos mas puntos tengas, mas dificil será.
+
+## Sobre el proyecto
+
+El proyecto cuenta con el directorio Assets donde estan alojadas todas las imagenes para que el juego funcione correctamente. 
+En el archivo main.py es donde el juego cuenta con todas las funcionalidades para funcionar, 
+Primero importo las librerias, luego los assets. 
+El script cuenta con varias clases que en el juego cuenta como una "entidad", la clase capybara es donde  estan las funciones del jugador, como la de saltar y agacharse (jump, y duck)
 
 ## Instalación
 Requerimientos: Necesitas tener python instalado

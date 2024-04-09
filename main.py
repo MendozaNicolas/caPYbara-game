@@ -44,6 +44,9 @@ CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
 
 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
 
+
+# Clases
+
 class Capybara:
     X_POS = 80
     Y_POS = 311
