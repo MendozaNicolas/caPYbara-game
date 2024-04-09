@@ -12,18 +12,32 @@ SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Juego dinosaurio")
 
-RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
-        pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
-JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
-DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
-        pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
+# RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
+#         pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+# JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
+# DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
+#         pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
 
-SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
-LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus2.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus3.png"))]
+RUNNING = [
+        pygame.image.load(os.path.join("Assets/Capy", "CapyRun0.png")),
+        pygame.image.load(os.path.join("Assets/Capy", "CapyRun1.png")),
+        pygame.image.load(os.path.join("Assets/Capy", "CapyRun2.png")),
+        pygame.image.load(os.path.join("Assets/Capy", "CapyRun3.png")),
+        pygame.image.load(os.path.join("Assets/Capy", "CapyRun4.png"))
+        ]
+JUMPING = pygame.image.load(os.path.join("Assets/Capy", "CapyJump.png"))
+DUCKING = [pygame.image.load(os.path.join("Assets/Capy", "CapyDuck1.png")),
+        pygame.image.load(os.path.join("Assets/Capy", "CapyDuck2.png"))]
+
+
+
+
+SMALL_BOX = [pygame.image.load(os.path.join("Assets/Box", "SmallBox1.png")),
+                pygame.image.load(os.path.join("Assets/Box", "SmallBox2.png")),
+                pygame.image.load(os.path.join("Assets/Box", "SmallBox3.png"))]
+LARGE_BOX = [pygame.image.load(os.path.join("Assets/Box", "LargeBox1.png")),
+                pygame.image.load(os.path.join("Assets/Box", "LargeBox2.png")),
+                pygame.image.load(os.path.join("Assets/Box", "LargeBox3.png"))]
 
 BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
         pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
@@ -34,8 +48,8 @@ BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
 
 class Dinosaur:
     X_POS = 80
-    Y_POS = 310
-    Y_POS_DUCK = 340
+    Y_POS = 311
+    Y_POS_DUCK = 350
     JUMP_VEL = 8.5 
     
     def __init__(self):
@@ -135,14 +149,14 @@ class Obstacle:
     def draw(self, SCREEN):
         SCREEN.blit(self.image[self.type], self.rect)
 
-class SmallCactus(Obstacle):
+class SmallBox(Obstacle):
     def __init__(self, image):
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
         self.rect.y = 325
         
         
-class LargeCactus(Obstacle):
+class LargeBox(Obstacle):
     def __init__(self, image):
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
@@ -201,7 +215,8 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
         
-        SCREEN.fill((255, 255 ,255))
+        # SCREEN.fill((255, 255 ,255))
+        SCREEN.fill((111, 176, 183))
         userInput = pygame.key.get_pressed()
         
         player.draw(SCREEN)
@@ -209,9 +224,9 @@ def main():
         
         if len(obstacles) == 0:
             if random.randint(0, 2) == 0:
-                obstacles.append(SmallCactus(SMALL_CACTUS))
+                obstacles.append(SmallBox(SMALL_BOX))
             elif random.randint(0, 2) == 1:
-                obstacles.append(LargeCactus(LARGE_CACTUS))
+                obstacles.append(LargeBox(LARGE_BOX))
             elif random.randint(0, 2) == 2:
                 obstacles.append(Bird(BIRD))
                 
@@ -244,7 +259,12 @@ def menu(death_count):
         font = pygame.font.Font('freesansbold.ttf', 20)
         
         if death_count == 0:
-            text = font.render ("Presiona cualquier tecla para empezar", True, (0, 0, 0))
+            text = font.render ("Presiona cualquier tecla para empezar ", True, (0, 0, 0))
+            controls = font.render ("Controles: Flecha arriba para saltar, flecha abajo para agacharse" , True, (0, 0, 0))
+            controlsRect = controls.get_rect()
+            controlsRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            SCREEN.blit(controls, controlsRect)
+
         elif death_count > 0:
             text = font.render ("Presiona cualquier tecla para volver a empezar", True, (0, 0, 0))
             score = font.render("Tus puntos: " + str(points), True, (0, 0, 0))
