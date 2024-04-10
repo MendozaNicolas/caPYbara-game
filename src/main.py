@@ -247,13 +247,13 @@ def main():
                 pygame.time.delay(2000)
                 death_count += 1
                 gameover(death_count)
-                
+
         if len(fruits) == 0:
             if random.randint(0, 1) == 0:
                 fruits.append(Cherry(globals.FRUITS))
             elif random.randint(0, 1) == 1:
                 fruits.append(Watermelon(globals.FRUITS))
-        
+
         for fruit in fruits:
             fruit.draw(globals.SCREEN)
             fruit.update()
@@ -349,17 +349,19 @@ def main_menu():
 
         PLAY_BUTTON = Button(None, pos=(globals.SCREEN_WIDTH // 2, globals.SCREEN_HEIGHT// 2 - 50), 
                             text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(None, pos=(globals.SCREEN_WIDTH // 2, globals.SCREEN_HEIGHT // 2 + 75), 
-                            text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+        # OPTIONS_BUTTON = Button(None, pos=(globals.SCREEN_WIDTH // 2, globals.SCREEN_HEIGHT // 2 + 75), 
+                            # text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
         QUIT_BUTTON = Button(None, pos=(globals.SCREEN_WIDTH // 2, globals.SCREEN_HEIGHT // 2 + 200), 
                             text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
 
         globals.SCREEN.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
+        # for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
+        #     button.changeColor(MENU_MOUSE_POS)
+        #     button.update(globals.SCREEN)
+        for button in [PLAY_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(globals.SCREEN)
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -368,9 +370,9 @@ def main_menu():
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     SOUNDS_OPTION.play()
                     play()
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    SOUNDS_OPTION.play()
-                    options()
+                # if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                #     SOUNDS_OPTION.play()
+                #     options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     SOUNDS_OPTION.play()
                     pygame.quit()
